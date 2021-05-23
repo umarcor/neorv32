@@ -12,3 +12,5 @@ include::software.adoc[]
 include::on_chip_debugger.adoc[]
 
 include::../legal.adoc[]
+
+include::wavedrom.adoc[]
