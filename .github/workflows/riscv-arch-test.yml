@@ -22,15 +22,20 @@ jobs:
 
     steps:
 
-      - name: '🧰 Repository Checkout'
-        uses: actions/checkout@v2
+    - name: '🧰 Repository Checkout'
+      uses: actions/checkout@v2
 
-      - name: '⚙️ Setup Software Framework'
-        uses: docker://ghcr.io/stnolting/neorv32/sim
-        with:
-          args: ./do.py BuildAndInstallSoftwareFrameworkTests
+    - name: '⚙️ Setup: doit, RISC-V GCC and Environment Variables'
+      run: |
+        echo "$GITHUB_WORKSPACE/riscv/bin" >> $GITHUB_PATH
+        echo $GITHUB_WORKSPACE
+        pip3 install doit
+        ./do.py SetupRISCVGCC
 
-      - name: '🚧 Run RISC-V Architecture Tests'
-        uses: docker://ghcr.io/stnolting/neorv32/sim
-        with:
-          args: ./do.py RunRISCVArchitectureTests -s ${{ matrix.suite }}
+    - name: '🔧 Setup GHDL Simulator'
+      uses: ghdl/setup-ghdl-ci@nightly
+      with:
+        backend: gcc
+
+    - name: '🚧 Run RISC-V Architecture Tests'
+      run: ./do.py RunRISCVArchitectureTests -s ${{ matrix.suite }}
