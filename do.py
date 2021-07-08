@@ -99,6 +99,26 @@ def task_GenerateExamplesJobMatrix():
     }
 
 
+def task_BuildAndInstallCheckSoftware():
+    return {
+        "actions": [
+            " ".join(
+                [
+                    "make -C sw/example/processor_check",
+                    "clean_all",
+                    "USER_FLAGS+=-DRUN_CHECK",
+                    "USER_FLAGS+=-DUART0_SIM_MODE",
+                    "USER_FLAGS+=-DSUPPRESS_OPTIONAL_UART_PRINT",
+                    "MARCH=rv32imac",
+                    "info",
+                    "all",
+                ]
+            )
+        ],
+        "doc": "Build and install Processor Check software",
+    }
+
+
 def task_BuildAndInstallSoftwareFrameworkTests():
     return {
         "actions": [
@@ -114,6 +134,33 @@ def task_BuildAndInstallSoftwareFrameworkTests():
             "make -C sw/example/processor_check clean_all USER_FLAGS+=-DRUN_CHECK USER_FLAGS+=-DUART0_SIM_MODE USER_FLAGS+=-DUART1_SIM_MODE MARCH=rv32imac info all",
         ],
         "doc": "Build all sw/example/*; install bootloader and processor check",
+    }
+
+
+def task_sim():
+    simdir = ROOT / "sim"
+    yield {
+        "name": "Simple",
+        "actions": [str(simdir / "simple/ghdl.sh")],
+        "doc": "Run simple testbench with GHDL",
+        "uptodate": [False],
+    }
+    yield {
+        "name": "VUnit",
+        # FIXME: It should we possible to use '--' for separating the args to be passed raw to the action, instead of
+        # requiring a param and wrapping all the args in a single string
+        "actions": ["{} {} {{args}}".format(executable, str(simdir / "run.py"))],
+        "doc": "Run VUnit testbench",
+        "uptodate": [False],
+        "params": [
+            {
+                "name": "args",
+                "short": "a",
+                "long": "args",
+                "default": "--ci-mode -v",
+                "help": "Arguments to pass to the VUnit script",
+            }
+        ],
     }
 
 
