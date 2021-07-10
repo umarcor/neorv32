@@ -2,13 +2,13 @@ name: Implementation
 
 on:
   push:
-    paths:
-    - 'setups/**'
-    - 'rtl/**'
-  pull_request:
-    paths:
-    - 'setups/**'
-    - 'rtl/**'
+  #  paths:
+  #  - 'setups/**'
+  #  - 'rtl/**'
+  #pull_request:
+  #  paths:
+  #  - 'setups/**'
+  #  - 'rtl/**'
   schedule:
     - cron: '0 0 * * 5'
   workflow_dispatch:
