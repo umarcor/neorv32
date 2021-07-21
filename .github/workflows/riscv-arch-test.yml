@@ -3,6 +3,7 @@
 name: 'riscv-arch-test'
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:

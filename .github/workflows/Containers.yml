@@ -2,8 +2,8 @@ name: Containers
 
 on:
   push:
-    paths:
-    - '.github/*.dockerfile'
+  #  paths:
+  #  - '.github/*.dockerfile'
   schedule:
     - cron: '0 0 * * 5'
   workflow_dispatch:
