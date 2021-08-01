@@ -15,6 +15,7 @@ from tasks.examples import Example, GenerateExamplesJobMatrix, PRJ
 BOARDS = PRJ.Boards
 
 DOIT_CONFIG = {"verbosity": 2, "action_string_formatting": "both"}
+EXTRA_ARGS = []
 
 ROOT = Path(__file__).parent
 
@@ -218,5 +219,27 @@ def task_DeployToGitHubPages():
     }
 
 
+def task_echo():
+    return {
+        'actions': ['echo hi {args}'],
+        'verbosity': 2,
+        "params": [
+            {
+                "name": "args",
+                "short": "a",
+                "long": "args",
+                "type": list,
+                "default": EXTRA_ARGS,
+                "help": "Arguments to pass to the VUnit script",
+            }
+        ],
+    }
+
+
 if __name__ == '__main__':
-    sys_exit(DoitMain(ModuleTaskLoader(globals())).run(sys_argv[1:]))
+    argv = sys_argv[1:]
+    if '--' in argv:
+        idx = argv.index('--')
+        EXTRA_ARGS = argv[idx+1:]
+        argv = argv[0:idx]
+    sys_exit(DoitMain(ModuleTaskLoader(globals())).run(argv))
