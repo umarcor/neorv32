@@ -32,12 +32,12 @@ jobs:
       uses: actions/checkout@v2
 
     - name: '⚙️ Build Software Framework Tests'
-      uses: docker://ghcr.io/stnolting/neorv32/sim
+      uses: docker://ghcr.io/umarcor/neorv32/sim
       with:
         args: ./do.py BuildAndInstallSoftwareFrameworkTests
 
     - name: '🚧 Run Processor Hardware Tests with shell script'
-      uses: docker://ghcr.io/stnolting/neorv32/sim
+      uses: docker://ghcr.io/umarcor/neorv32/sim
       with:
         args: ./do.py sim:Simple
 
@@ -52,7 +52,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: '⚙️ Build and install Processor Check software'
-      uses: docker://ghcr.io/stnolting/neorv32/sim
+      uses: docker://ghcr.io/umarcor/neorv32/sim
       with:
         args: ./do.py BuildAndInstallCheckSoftware
 
@@ -63,6 +63,6 @@ jobs:
         path: rtl/core/neorv32_application_image.vhd
 
     - name: '🚧 Run Processor Hardware Tests with VUnit'
-      uses: docker://ghcr.io/stnolting/neorv32/sim
+      uses: docker://ghcr.io/umarcor/neorv32/sim
       with:
         args: ./do.py sim:VUnit
